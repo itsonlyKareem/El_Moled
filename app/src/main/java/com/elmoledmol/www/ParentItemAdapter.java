@@ -34,7 +34,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Picasso.get().load(ChildItemList.get(position).getImagemodel()).into(holder.model);
-        Picasso.get().load(ChildItemList.get(position).getLogobrand()).into(holder.logo);
+//        Picasso.get().load(ChildItemList.get(position).getLogobrand()).into(holder.logo);
         holder.itemName.setText(ChildItemList.get(position).getProductname());
         holder.discount.setText(ChildItemList.get(position).getDiscount());
         holder.newPrice.setText(ChildItemList.get(position).getNewPrice());
@@ -87,7 +87,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Vi
             newPrice = itemView.findViewById(R.id.searchCategoryNewPrice);
             oldPrice = itemView.findViewById(R.id.searchCategoryOldPrice);
             model=itemView.findViewById(R.id.imageView8);
-            logo=itemView.findViewById(R.id.imageView);
+//            logo=itemView.findViewById(R.id.imageView);
             offer=itemView.findViewById(R.id.imageView12);
             linearLayout=itemView.findViewById(R.id.linearLayout);
             cardFrame = itemView.findViewById(R.id.linearLayoutCategories);

@@ -22,9 +22,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.Cache;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -32,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,7 +128,7 @@ public class onsale extends Fragment {
                 searchitemsAdapter searchItemsAdapter = new onsale.searchitemsAdapter(items, itemList, headers, categories, men);
                 headers.setAdapter(searchItemsAdapter);
 
-                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=";
+                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/IsProductOfferPercentage?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=";
 
                 request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                     @Override
@@ -158,7 +163,58 @@ public class onsale extends Fragment {
                     public void onErrorResponse(VolleyError error) {
 
                     }
-                });
+                }){
+                    @Override
+                    protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                        try {
+                            Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+                            if (cacheEntry == null) {
+                                cacheEntry = new Cache.Entry();
+                            }
+                            final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                            final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+                            long now = System.currentTimeMillis();
+                            final long softExpire = now + cacheHitButRefreshed;
+                            final long ttl = now + cacheExpired;
+                            cacheEntry.data = response.data;
+                            cacheEntry.softTtl = softExpire;
+                            cacheEntry.ttl = ttl;
+                            String headerValue;
+                            headerValue = response.headers.get("Date");
+                            if (headerValue != null) {
+                                cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                            }
+                            headerValue = response.headers.get("Last-Modified");
+                            if (headerValue != null) {
+                                cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                            }
+                            cacheEntry.responseHeaders = response.headers;
+                            final String jsonString = new String(response.data,
+                                    HttpHeaderParser.parseCharset(response.headers));
+                            return Response.success(new JSONArray(jsonString), cacheEntry);
+                        } catch (UnsupportedEncodingException e) {
+                            return Response.error(new ParseError(e));
+                        } catch (JSONException e) {
+                            return Response.error(new ParseError(e));
+                        }
+                    }
+
+                    @Override
+                    protected void deliverResponse(JSONArray response) {
+                        super.deliverResponse(response);
+                    }
+
+                    @Override
+                    public void deliverError(VolleyError error) {
+                        super.deliverError(error);
+                    }
+
+                    @Override
+                    protected VolleyError parseNetworkError(VolleyError volleyError) {
+                        return super.parseNetworkError(volleyError);
+                    }
+                };
+                MySingleton.getInstance(getContext()).addToRequestQueue(request);
 
                 requestQueue = Volley.newRequestQueue(getContext());
                 requestQueue.add(request);
@@ -179,7 +235,7 @@ public class onsale extends Fragment {
 
                 List<ChildItem> list = new ArrayList<>();
 
-                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=";
+                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/IsProductOfferPercentage?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=";
 
                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                     @Override
@@ -214,7 +270,58 @@ public class onsale extends Fragment {
                         System.out.println("Failure");
 
                     }
-                });
+                }){
+                    @Override
+                    protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                        try {
+                            Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+                            if (cacheEntry == null) {
+                                cacheEntry = new Cache.Entry();
+                            }
+                            final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                            final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+                            long now = System.currentTimeMillis();
+                            final long softExpire = now + cacheHitButRefreshed;
+                            final long ttl = now + cacheExpired;
+                            cacheEntry.data = response.data;
+                            cacheEntry.softTtl = softExpire;
+                            cacheEntry.ttl = ttl;
+                            String headerValue;
+                            headerValue = response.headers.get("Date");
+                            if (headerValue != null) {
+                                cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                            }
+                            headerValue = response.headers.get("Last-Modified");
+                            if (headerValue != null) {
+                                cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                            }
+                            cacheEntry.responseHeaders = response.headers;
+                            final String jsonString = new String(response.data,
+                                    HttpHeaderParser.parseCharset(response.headers));
+                            return Response.success(new JSONArray(jsonString), cacheEntry);
+                        } catch (UnsupportedEncodingException e) {
+                            return Response.error(new ParseError(e));
+                        } catch (JSONException e) {
+                            return Response.error(new ParseError(e));
+                        }
+                    }
+
+                    @Override
+                    protected void deliverResponse(JSONArray response) {
+                        super.deliverResponse(response);
+                    }
+
+                    @Override
+                    public void deliverError(VolleyError error) {
+                        super.deliverError(error);
+                    }
+
+                    @Override
+                    protected VolleyError parseNetworkError(VolleyError volleyError) {
+                        return super.parseNetworkError(volleyError);
+                    }
+                };
+                MySingleton.getInstance(getContext()).addToRequestQueue(request);
                 RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                 requestQueue.add(request);
             }
@@ -235,7 +342,7 @@ public class onsale extends Fragment {
 
                 List<ChildItem> list = new ArrayList<>();
 
-                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=";
+                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/IsProductOfferPercentage?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=";
 
                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                     @Override
@@ -270,7 +377,58 @@ public class onsale extends Fragment {
                         System.out.println("Failure");
 
                     }
-                });
+                }){
+                    @Override
+                    protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                        try {
+                            Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+                            if (cacheEntry == null) {
+                                cacheEntry = new Cache.Entry();
+                            }
+                            final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                            final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+                            long now = System.currentTimeMillis();
+                            final long softExpire = now + cacheHitButRefreshed;
+                            final long ttl = now + cacheExpired;
+                            cacheEntry.data = response.data;
+                            cacheEntry.softTtl = softExpire;
+                            cacheEntry.ttl = ttl;
+                            String headerValue;
+                            headerValue = response.headers.get("Date");
+                            if (headerValue != null) {
+                                cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                            }
+                            headerValue = response.headers.get("Last-Modified");
+                            if (headerValue != null) {
+                                cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                            }
+                            cacheEntry.responseHeaders = response.headers;
+                            final String jsonString = new String(response.data,
+                                    HttpHeaderParser.parseCharset(response.headers));
+                            return Response.success(new JSONArray(jsonString), cacheEntry);
+                        } catch (UnsupportedEncodingException e) {
+                            return Response.error(new ParseError(e));
+                        } catch (JSONException e) {
+                            return Response.error(new ParseError(e));
+                        }
+                    }
+
+                    @Override
+                    protected void deliverResponse(JSONArray response) {
+                        super.deliverResponse(response);
+                    }
+
+                    @Override
+                    public void deliverError(VolleyError error) {
+                        super.deliverError(error);
+                    }
+
+                    @Override
+                    protected VolleyError parseNetworkError(VolleyError volleyError) {
+                        return super.parseNetworkError(volleyError);
+                    }
+                };
+                MySingleton.getInstance(getContext()).addToRequestQueue(request);
                 RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                 requestQueue.add(request);
             }
@@ -314,7 +472,7 @@ public class onsale extends Fragment {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             if (position == 0) {
-                                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=" + brandList.get(0).ID;
+                                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/IsProductOfferPercentage?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=" + brandList.get(0).ID;
                                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                                     @Override
                                     public void onResponse(JSONArray response) {
@@ -381,14 +539,65 @@ public class onsale extends Fragment {
                                     public void onErrorResponse(VolleyError error) {
 
                                     }
-                                });
+                                }){
+                                    @Override
+                                    protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                                        try {
+                                            Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+                                            if (cacheEntry == null) {
+                                                cacheEntry = new Cache.Entry();
+                                            }
+                                            final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                                            final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+                                            long now = System.currentTimeMillis();
+                                            final long softExpire = now + cacheHitButRefreshed;
+                                            final long ttl = now + cacheExpired;
+                                            cacheEntry.data = response.data;
+                                            cacheEntry.softTtl = softExpire;
+                                            cacheEntry.ttl = ttl;
+                                            String headerValue;
+                                            headerValue = response.headers.get("Date");
+                                            if (headerValue != null) {
+                                                cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                                            }
+                                            headerValue = response.headers.get("Last-Modified");
+                                            if (headerValue != null) {
+                                                cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                                            }
+                                            cacheEntry.responseHeaders = response.headers;
+                                            final String jsonString = new String(response.data,
+                                                    HttpHeaderParser.parseCharset(response.headers));
+                                            return Response.success(new JSONArray(jsonString), cacheEntry);
+                                        } catch (UnsupportedEncodingException e) {
+                                            return Response.error(new ParseError(e));
+                                        } catch (JSONException e) {
+                                            return Response.error(new ParseError(e));
+                                        }
+                                    }
+
+                                    @Override
+                                    protected void deliverResponse(JSONArray response) {
+                                        super.deliverResponse(response);
+                                    }
+
+                                    @Override
+                                    public void deliverError(VolleyError error) {
+                                        super.deliverError(error);
+                                    }
+
+                                    @Override
+                                    protected VolleyError parseNetworkError(VolleyError volleyError) {
+                                        return super.parseNetworkError(volleyError);
+                                    }
+                                };
+                                MySingleton.getInstance(getContext()).addToRequestQueue(request);
                                 RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                                 requestQueue.add(request);
 
                                 searchText.setText(null);
 
                             } else {
-                                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=" + brandList.get(position).ID;
+                                String url = "http://clothesshopapi2.azurewebsites.net/api/Product/IsProductOfferPercentage?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=" + brandList.get(position).ID;
                                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                                     @Override
                                     public void onResponse(JSONArray response) {
@@ -455,7 +664,58 @@ public class onsale extends Fragment {
                                     public void onErrorResponse(VolleyError error) {
 
                                     }
-                                });
+                                }){
+                                    @Override
+                                    protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                                        try {
+                                            Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+                                            if (cacheEntry == null) {
+                                                cacheEntry = new Cache.Entry();
+                                            }
+                                            final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                                            final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+                                            long now = System.currentTimeMillis();
+                                            final long softExpire = now + cacheHitButRefreshed;
+                                            final long ttl = now + cacheExpired;
+                                            cacheEntry.data = response.data;
+                                            cacheEntry.softTtl = softExpire;
+                                            cacheEntry.ttl = ttl;
+                                            String headerValue;
+                                            headerValue = response.headers.get("Date");
+                                            if (headerValue != null) {
+                                                cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                                            }
+                                            headerValue = response.headers.get("Last-Modified");
+                                            if (headerValue != null) {
+                                                cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                                            }
+                                            cacheEntry.responseHeaders = response.headers;
+                                            final String jsonString = new String(response.data,
+                                                    HttpHeaderParser.parseCharset(response.headers));
+                                            return Response.success(new JSONArray(jsonString), cacheEntry);
+                                        } catch (UnsupportedEncodingException e) {
+                                            return Response.error(new ParseError(e));
+                                        } catch (JSONException e) {
+                                            return Response.error(new ParseError(e));
+                                        }
+                                    }
+
+                                    @Override
+                                    protected void deliverResponse(JSONArray response) {
+                                        super.deliverResponse(response);
+                                    }
+
+                                    @Override
+                                    public void deliverError(VolleyError error) {
+                                        super.deliverError(error);
+                                    }
+
+                                    @Override
+                                    protected VolleyError parseNetworkError(VolleyError volleyError) {
+                                        return super.parseNetworkError(volleyError);
+                                    }
+                                };
+                                MySingleton.getInstance(getContext()).addToRequestQueue(request);
                                 RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                                 requestQueue.add(request);
 
@@ -477,7 +737,58 @@ public class onsale extends Fragment {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            });
+            }){
+                @Override
+                protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                    try {
+                        Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+                        if (cacheEntry == null) {
+                            cacheEntry = new Cache.Entry();
+                        }
+                        final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                        final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+                        long now = System.currentTimeMillis();
+                        final long softExpire = now + cacheHitButRefreshed;
+                        final long ttl = now + cacheExpired;
+                        cacheEntry.data = response.data;
+                        cacheEntry.softTtl = softExpire;
+                        cacheEntry.ttl = ttl;
+                        String headerValue;
+                        headerValue = response.headers.get("Date");
+                        if (headerValue != null) {
+                            cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                        }
+                        headerValue = response.headers.get("Last-Modified");
+                        if (headerValue != null) {
+                            cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                        }
+                        cacheEntry.responseHeaders = response.headers;
+                        final String jsonString = new String(response.data,
+                                HttpHeaderParser.parseCharset(response.headers));
+                        return Response.success(new JSONArray(jsonString), cacheEntry);
+                    } catch (UnsupportedEncodingException e) {
+                        return Response.error(new ParseError(e));
+                    } catch (JSONException e) {
+                        return Response.error(new ParseError(e));
+                    }
+                }
+
+                @Override
+                protected void deliverResponse(JSONArray response) {
+                    super.deliverResponse(response);
+                }
+
+                @Override
+                public void deliverError(VolleyError error) {
+                    super.deliverError(error);
+                }
+
+                @Override
+                protected VolleyError parseNetworkError(VolleyError volleyError) {
+                    return super.parseNetworkError(volleyError);
+                }
+            };
+            MySingleton.getInstance(getContext()).addToRequestQueue(requestBrand);
             RequestQueue requestQueueBrand = Volley.newRequestQueue(getContext());
             requestQueueBrand.add(requestBrand);
         }
@@ -527,8 +838,59 @@ public class onsale extends Fragment {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            });
+            })
+            {
+                @Override
+                protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                    try {
+                        Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+                        if (cacheEntry == null) {
+                            cacheEntry = new Cache.Entry();
+                        }
+                        final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                        final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+                        long now = System.currentTimeMillis();
+                        final long softExpire = now + cacheHitButRefreshed;
+                        final long ttl = now + cacheExpired;
+                        cacheEntry.data = response.data;
+                        cacheEntry.softTtl = softExpire;
+                        cacheEntry.ttl = ttl;
+                        String headerValue;
+                        headerValue = response.headers.get("Date");
+                        if (headerValue != null) {
+                            cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                        }
+                        headerValue = response.headers.get("Last-Modified");
+                        if (headerValue != null) {
+                            cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                        }
+                        cacheEntry.responseHeaders = response.headers;
+                        final String jsonString = new String(response.data,
+                                HttpHeaderParser.parseCharset(response.headers));
+                        return Response.success(new JSONArray(jsonString), cacheEntry);
+                    } catch (UnsupportedEncodingException e) {
+                        return Response.error(new ParseError(e));
+                    } catch (JSONException e) {
+                        return Response.error(new ParseError(e));
+                    }
+                }
 
+                @Override
+                protected void deliverResponse(JSONArray response) {
+                    super.deliverResponse(response);
+                }
+
+                @Override
+                public void deliverError(VolleyError error) {
+                    super.deliverError(error);
+                }
+
+                @Override
+                protected VolleyError parseNetworkError(VolleyError volleyError) {
+                    return super.parseNetworkError(volleyError);
+                }
+            };
+            MySingleton.getInstance(getContext()).addToRequestQueue(request);
             requestQueue = Volley.newRequestQueue(getContext());
             requestQueue.add(request);
         }

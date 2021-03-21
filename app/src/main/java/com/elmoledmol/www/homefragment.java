@@ -53,6 +53,8 @@ public class homefragment extends Fragment {
     private RequestQueue requestQueue, requestQueue2,requestQueue3,requestQueue4;
     private JsonArrayRequest request, request2,request3,request4;
 
+
+
     public homefragment() {
 
     }
@@ -65,6 +67,8 @@ public class homefragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_homefragment, container, false);
         calling(v);
+
+        System.out.println("Hello world");
 
         // Headers for home categories.
         newa.setText("New Arrivals");

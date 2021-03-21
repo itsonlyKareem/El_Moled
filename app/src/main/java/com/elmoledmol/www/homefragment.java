@@ -68,7 +68,6 @@ public class homefragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_homefragment, container, false);
         calling(v);
 
-        System.out.println("Hello world");
 
         // Headers for home categories.
         newa.setText("New Arrivals");

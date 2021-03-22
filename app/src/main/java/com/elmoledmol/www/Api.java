@@ -45,4 +45,9 @@ public interface Api {
             @Body MyData object
             );
 
+    @POST ("api/Account/PasswordResetByEmail")
+    Call<ResponseBody> resetPassword (
+            @Header("Email") String email
+    );
+
 }

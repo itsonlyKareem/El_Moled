@@ -11,7 +11,15 @@ public class cartinheret implements Parcelable {
     int colorId;
     int sizeId;
     int mainId;
+    int percentage;
 
+    public int getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
+    }
 
     public String getName() {
         return name;
@@ -45,7 +53,7 @@ public class cartinheret implements Parcelable {
         this.mainId = mainId;
     }
 
-    public cartinheret(String name, float price, String images, int mainId, int qunatity, int colorId, int choiceSize) {
+    public cartinheret(String name, float price, String images, int mainId, int qunatity, int colorId, int choiceSize,int percentage) {
         this.price = price;
         this.images = images;
         this.Qunatity = qunatity;
@@ -53,6 +61,7 @@ public class cartinheret implements Parcelable {
         this.colorId = colorId;
         this.sizeId = choiceSize;
         this.mainId = mainId;
+        this.percentage = percentage;
     }
 
     protected cartinheret(Parcel in) {
@@ -63,6 +72,7 @@ public class cartinheret implements Parcelable {
         colorId = in.readInt();
         sizeId = in.readInt();
         mainId = in.readInt();
+        percentage = in.readInt();
     }
 
     public static final Creator<cartinheret> CREATOR = new Creator<cartinheret>() {
@@ -115,6 +125,7 @@ public class cartinheret implements Parcelable {
         dest.writeInt(colorId);
         dest.writeInt(sizeId);
         dest.writeInt(mainId);
+        dest.writeInt(percentage);
 
     }
 }

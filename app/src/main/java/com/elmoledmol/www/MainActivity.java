@@ -173,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
         OneSignal.initWithContext(this);
         OneSignal.setAppId(ONESIGNAL_APP_ID);
 
+        counter.setText(String.valueOf(loadData().size()));
+
     }
 
     @Override

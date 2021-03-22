@@ -1,6 +1,7 @@
 package com.elmoledmol.www;
 
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +28,13 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_categories_items,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.featured_card,parent,false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Picasso.get().load(ChildItemList.get(position).getImagemodel()).into(holder.model);
-//        Picasso.get().load(ChildItemList.get(position).getLogobrand()).into(holder.logo);
+        Picasso.get().load(ChildItemList.get(position).getImagemodel()).resize(400,400).into(holder.model);
         holder.itemName.setText(ChildItemList.get(position).getProductname());
         holder.discount.setText(ChildItemList.get(position).getDiscount());
         holder.newPrice.setText(ChildItemList.get(position).getNewPrice());
@@ -82,17 +82,14 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Vi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            discount = itemView.findViewById(R.id.searchCategoryDiscount);
-            itemName = itemView.findViewById(R.id.searchCategoryName);
-            newPrice = itemView.findViewById(R.id.searchCategoryNewPrice);
-            oldPrice = itemView.findViewById(R.id.searchCategoryOldPrice);
+            discount = itemView.findViewById(R.id.mypercent);
+            itemName = itemView.findViewById(R.id.textView);
+            newPrice = itemView.findViewById(R.id.textView13);
+            oldPrice = itemView.findViewById(R.id.textView14);
             model=itemView.findViewById(R.id.imageView8);
-//            logo=itemView.findViewById(R.id.imageView);
             offer=itemView.findViewById(R.id.imageView12);
             linearLayout=itemView.findViewById(R.id.linearLayout);
-            cardFrame = itemView.findViewById(R.id.linearLayoutCategories);
 
-            cardFrame.setBackgroundResource(R.drawable.corner_category_fragment_item);
 
         }
     }

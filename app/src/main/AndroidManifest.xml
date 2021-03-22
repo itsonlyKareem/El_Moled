@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Elmoledmol"
         android:usesCleartextTraffic="true">
-        <activity android:name=".showmyaddresses"></activity>
+        <activity android:name=".AppInfoActivity"></activity>
+        <activity android:name=".showmyaddresses" />
         <activity android:name=".showimage" />
         <activity android:name=".sellalltop" />
         <activity android:name=".processsuccess" />

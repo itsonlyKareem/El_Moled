@@ -6,19 +6,21 @@ import android.widget.ImageView;
 
 public class featuredinheret implements Parcelable {
     String product,price,hiddenprice;
-    int imagemodel;
-    public featuredinheret(String product, String price, String hiddenprice, int imagemodel) {
+    String imagemodel,percentage;
+    public featuredinheret(String product, String price, String hiddenprice, String imagemodel,String percentage) {
         this.product = product;
         this.price = price;
         this.hiddenprice = hiddenprice;
         this.imagemodel = imagemodel;
+        this.percentage = percentage;
     }
 
     protected featuredinheret(Parcel in) {
         product = in.readString();
         price = in.readString();
         hiddenprice = in.readString();
-        imagemodel = in.readInt();
+        imagemodel = in.readString();
+        percentage = in.readString();
     }
 
     public static final Creator<featuredinheret> CREATOR = new Creator<featuredinheret>() {
@@ -32,6 +34,14 @@ public class featuredinheret implements Parcelable {
             return new featuredinheret[size];
         }
     };
+
+    public String getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(String percentage) {
+        this.percentage = percentage;
+    }
 
     public String getProduct() {
         return product;
@@ -57,11 +67,11 @@ public class featuredinheret implements Parcelable {
         this.hiddenprice = hiddenprice;
     }
 
-    public int getImagemodel() {
+    public String getImagemodel() {
         return imagemodel;
     }
 
-    public void setImagemodel(int imagemodel) {
+    public void setImagemodel(String imagemodel) {
         this.imagemodel = imagemodel;
     }
 
@@ -75,6 +85,7 @@ public class featuredinheret implements Parcelable {
         dest.writeString(product);
         dest.writeString(price);
         dest.writeString(hiddenprice);
-        dest.writeInt(imagemodel);
+        dest.writeString(imagemodel);
+        dest.writeString(percentage);
     }
 }

@@ -67,6 +67,11 @@
         android:name="com.elmoledmol.www.reviews"
         android:label="fragment_reviews"
         tools:layout="@layout/fragment_reviews" />
+    <fragment
+        android:id="@+id/bookmarksfragment"
+        android:name="com.elmoledmol.www.bookmarksfragment"
+        android:label="fragment_bookmarksfragment"
+        tools:layout="@layout/fragment_bookmarksfragment" />
 
 
 </navigation>

@@ -91,6 +91,13 @@ public class newsinheret implements Parcelable  {
         this.rate = rate;
     }
 
+    public newsinheret (String product,float price,String hiddentext, String imagemodel) {
+        this.product = product;
+        this.price = price;
+        this.hiddentext = hiddentext;
+        this.imagemodel = imagemodel;
+    }
+
     protected newsinheret(Parcel in) {
         product = in.readString();
         price = in.readFloat();

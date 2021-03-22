@@ -35,7 +35,7 @@ public class featuredadapter extends RecyclerView.Adapter<featuredadapter.mh> {
 
     @Override
     public void onBindViewHolder(@NonNull mh holder, int position) {
-        Picasso.get().load(list.get(position).getImagemodel()).into(holder.imagemodel);
+        Picasso.get().load(list.get(position).getImagemodel()).resize(400,400).into(holder.imagemodel);
         holder.product.setText(list.get(position).getProduct());
         holder.price.setText("EGP " + String.valueOf(list.get(position).getPrice()));
         float x = list.get(position).getPrice() * (100 - list.get(position).percentage) / 100;
@@ -55,12 +55,13 @@ public class featuredadapter extends RecyclerView.Adapter<featuredadapter.mh> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, productInformation.class);
                 intent.putExtra("productName", list.get(position).getProduct());
-                intent.putExtra("rate", list.get(position).getRate());
+                intent.putExtra("rate", list.get(position).price);
                 intent.putExtra("price", x);
                 intent.putExtra("productID",list.get(position).getId());
                 intent.putExtra("mainProductId",list.get(position).getMainid());
                 intent.putExtra("brandsId",list.get(position).getBrandid());
                 intent.putExtra("image",list.get(position).getImagemodel());
+                intent.putExtra("percentage",list.get(position).percentage);
 
                 context.startActivity(intent);
 

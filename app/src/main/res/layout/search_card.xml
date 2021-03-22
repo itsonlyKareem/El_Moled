@@ -22,15 +22,17 @@
 
             <ImageView
                 android:id="@+id/imageView11"
-                android:layout_width="300px"
-                android:layout_height="200px"
+                android:layout_width="200px"
+                android:layout_height="150px"
+                android:layout_gravity="center"
                 android:layout_marginBottom="20sp"
                 app:srcCompat="@drawable/brand1" />
 
             <TextView
                 android:id="@+id/textView18"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:text="Pull &amp; Bear"
                 android:textColor="#000000"

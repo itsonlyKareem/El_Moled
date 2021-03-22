@@ -25,27 +25,37 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="400px"
+                android:layout_height="400px"
+                android:layout_gravity="center"
+                android:translationZ="1dp">
 
                 <ImageView
                     android:id="@+id/imageView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/model1" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="bottom|end"
-                    android:orientation="vertical">
-<ImageView
-    android:layout_width="wrap_content"
-    android:id="@+id/favo"
-    android:layout_height="wrap_content"
-    android:src="@drawable/favorite"/>
+                    android:gravity="bottom"
+                    android:orientation="vertical"
+                    android:translationZ="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/favo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:src="@drawable/favorite" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

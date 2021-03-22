@@ -23,14 +23,16 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="400px"
-                android:layout_height="600px">
+                android:layout_height="400px">
 
                 <ImageView
                     android:id="@+id/imageView8"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView12"

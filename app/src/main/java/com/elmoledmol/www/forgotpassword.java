@@ -14,6 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class forgotpassword extends Fragment {
     ViewPager viewPager;
@@ -35,8 +42,22 @@ public class forgotpassword extends Fragment {
                 if (TextUtils.isEmpty(email.getText().toString().trim())) {
                     email.setError("Email is required");
                     return;
+                }else {
+
+                    Call<ResponseBody> call = retrofitclient.getInstance().getApi().resetPassword(email.getText().toString());
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            System.out.println(response.code());
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
                 }
-                viewPager.setCurrentItem(7);
+
             }
         });
         back.setOnClickListener(new View.OnClickListener() {

@@ -4,11 +4,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ChildItem {
-    private int logo, model;
-    private String discount, itemName, newPrice, oldPrice;
-    private int mainid,percentage,brandid;
-    private String productname,imagemodel,logobrand;
-    private int price;
+     int logo, model;
+     String discount, itemName, newPrice, oldPrice;
+     int mainid,percentage,brandid;
+     String productname,imagemodel,logobrand;
+     int price;
 
     public int getMainid() {
         return mainid;

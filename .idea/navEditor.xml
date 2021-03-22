@@ -32,13 +32,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="bookmarksFragment">
+                  <entry key="bookmarksfragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="744" />
-                            <option name="y" value="12" />
+                            <option name="x" value="717" />
+                            <option name="y" value="13" />
                           </Point>
                         </option>
                       </LayoutPositions>

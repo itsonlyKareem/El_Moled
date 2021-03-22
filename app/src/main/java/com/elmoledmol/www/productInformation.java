@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,11 +44,11 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class productInformation extends AppCompatActivity {
+
     SlidingUpPanelLayout slidingUpPanelLayout;
     RatingBar ratingBar;
     TabLayout tabLayout;
@@ -58,20 +59,28 @@ public class productInformation extends AppCompatActivity {
     List<newsinheret> list3 = new ArrayList<>();
     List<ViewModel> list2 = new ArrayList<>();
     List<cartinheret> listCart = new ArrayList<>();
-    ImageView back;
-    private RequestQueue requestQueue;
-    private JsonArrayRequest request;
+    List<featuredinheret> listFavs = new ArrayList<>();
+    ImageView back, bookmark;
+    private RequestQueue requestQueue, requestQueueBrandName;
+    private JsonArrayRequest request, requestBrandName;
     TextView name, price, brandName;
-    int choiceColor;
-    int choiceSize;
-    int mainId;
+    int choiceColor, choiceSize, mainId;
     String myimage2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_information);
+
+        // Responsible for displaying the rating.
+        ratingBar = findViewById(R.id.rating);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        ratingBar.setClickable(false);
+        ratingBar.setFocusable(false);
+
+
+        // Definitions.
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         cardView2 = findViewById(R.id.add);
         recyclerView3 = findViewById(R.id.banner);
@@ -80,15 +89,21 @@ public class productInformation extends AppCompatActivity {
         brandName = findViewById(R.id.productDetailsBrand);
         tabLayout = findViewById(R.id.mytabs);
         viewPager = findViewById(R.id.mypaper);
-        ratingBar = findViewById(R.id.rating);
         cardView = findViewById(R.id.card10);
         recyclerView = findViewById(R.id.color);
         recyclerView2 = findViewById(R.id.sizes);
         back = findViewById(R.id.backProductInfo);
         cardView.setBackgroundResource(R.drawable.corner);
+        bookmark = findViewById(R.id.mybookmark);
+
+        // To hide the task bar at the top.
         getSupportActionBar().hide();
-        ratingBar.setClickable(false);
-        ratingBar.setFocusable(false);
+
+
+
+
+
+        // Navigator between Description and Reviews.
         paperadapter paperadapter = new paperadapter(getSupportFragmentManager());
         viewPager.setAdapter(paperadapter);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -108,18 +123,100 @@ public class productInformation extends AppCompatActivity {
 
             }
         });
-
-
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        // Extras brought from the home fragment to completely the product information.
         Intent intent = getIntent();
-         mainId = intent.getIntExtra("mainProductId", 0);
+        mainId = intent.getIntExtra("mainProductId", 0);
         String productName = intent.getStringExtra("productName");
-        int rate = intent.getIntExtra("rate", 0);
+        float rate = intent.getFloatExtra("rate", 0);
+        int percentage = intent.getIntExtra("percentage",0);
         float price2 = intent.getFloatExtra("price", 0);
         int brandId = intent.getIntExtra("brandsId", 0);
         int ID = intent.getIntExtra("productID", 0);
         String img = intent.getStringExtra("imgNameList");
-        String myimage2=intent.getStringExtra("image");
+        String myimage2 = intent.getStringExtra("image");
+
+        System.out.println(rate);
+        //Block Responsible for showing brand name.
+        {
+            String urlBrandName = "http://clothesshopapi2.azurewebsites.net/api/Product/Details?id="+mainId;
+            requestBrandName = new JsonArrayRequest(urlBrandName, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = response.getJSONObject(0);
+                        String BrandName = jsonObject.getString("brandName");
+                        brandName.setText(BrandName);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                    try {
+                        Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+                        if (cacheEntry == null) {
+                            cacheEntry = new Cache.Entry();
+                        }
+                        final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                        final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+                        long now = System.currentTimeMillis();
+                        final long softExpire = now + cacheHitButRefreshed;
+                        final long ttl = now + cacheExpired;
+                        cacheEntry.data = response.data;
+                        cacheEntry.softTtl = softExpire;
+                        cacheEntry.ttl = ttl;
+                        String headerValue;
+                        headerValue = response.headers.get("Date");
+                        if (headerValue != null) {
+                            cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                        }
+                        headerValue = response.headers.get("Last-Modified");
+                        if (headerValue != null) {
+                            cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                        }
+                        cacheEntry.responseHeaders = response.headers;
+                        final String jsonString = new String(response.data,
+                                HttpHeaderParser.parseCharset(response.headers));
+                        return Response.success(new JSONArray(jsonString), cacheEntry);
+                    } catch (UnsupportedEncodingException e) {
+                        return Response.error(new ParseError(e));
+                    } catch (JSONException e) {
+                        return Response.error(new ParseError(e));
+                    }
+                }
+
+                @Override
+                protected void deliverResponse(JSONArray response) {
+                    super.deliverResponse(response);
+                }
+
+                @Override
+                public void deliverError(VolleyError error) {
+                    super.deliverError(error);
+                }
+
+                @Override
+                protected VolleyError parseNetworkError(VolleyError volleyError) {
+                    return super.parseNetworkError(volleyError);
+                }
+            };
+            MySingleton.getInstance(getApplicationContext()).addToRequestQueue(requestBrandName);
+            requestQueueBrandName = Volley.newRequestQueue(getApplicationContext());
+            requestQueueBrandName.add(requestBrandName);
+        }
+
+
+        // Setting the placeholders in the page with information brought from the main page.
         name.setText(productName);
         price.setText("EGP " + price2);
         ratingBar.setRating((float) rate);
@@ -128,133 +225,136 @@ public class productInformation extends AppCompatActivity {
         reviews fragobj = new reviews();
         fragobj.setArguments(bundle);
 
-        String url = "http://clothesshopapi2.azurewebsites.net/api/Product/Color?id=" + mainId;
-        request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                JSONObject jsonObject = null;
+        // Block Responsible for showing colors and sizes and obtaining their IDs.
+        {
+            String url = "http://clothesshopapi2.azurewebsites.net/api/Product/Color?id=" + mainId;
+            request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    JSONObject jsonObject = null;
 
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        jsonObject = response.getJSONObject(i);
-                        JSONArray jsonArray = jsonObject.getJSONArray("listSize");
-                        List<Integer> IDs = new ArrayList<>();
-                        List<String> sizes = new ArrayList<>();
-                        List<String> images = new ArrayList<>();
-                        ViewModel viewModel = new ViewModel(IDs,sizes,images);
-                        for (int k = 0; k < jsonArray.length(); k++) {
-                            JSONObject jsonArrayObject = jsonArray.getJSONObject(k);
-                            int id = jsonArrayObject.getInt("sizeid");
-                            String size = jsonArrayObject.getString("sizeName");
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            jsonObject = response.getJSONObject(i);
+                            JSONArray jsonArray = jsonObject.getJSONArray("listSize");
+                            List<Integer> IDs = new ArrayList<>();
+                            List<String> sizes = new ArrayList<>();
+                            List<String> images = new ArrayList<>();
+                            ViewModel viewModel = new ViewModel(IDs, sizes, images);
+                            for (int k = 0; k < jsonArray.length(); k++) {
+                                JSONObject jsonArrayObject = jsonArray.getJSONObject(k);
+                                int id = jsonArrayObject.getInt("sizeid");
+                                String size = jsonArrayObject.getString("sizeName");
 //                            list2.add(new ViewModel(id,size));
-                            IDs.add(id);
-                            sizes.add(size);
+                                IDs.add(id);
+                                sizes.add(size);
 
+                            }
+                            viewModel.setId(IDs);
+                            viewModel.setName(sizes);
+
+
+                            JSONArray imagesArray = jsonObject.getJSONArray("imgNameList");
+                            for (int j = 0; j < imagesArray.length(); j++) {
+                                JSONObject imagesObject = imagesArray.getJSONObject(j);
+                                String image = imagesObject.getString("img");
+                                String myImg = "http://clothesshopapi2.azurewebsites.net/img/products/" + image;
+                                images.add(myImg);
+                                System.out.println(images);
+                            }
+                            viewModel.setImages(images);
+                            list2.add(viewModel);
+
+                            list3.add(new newsinheret(jsonObject.getInt("colorId"), Color.parseColor(jsonObject.getString("colorCode").substring(0, 7)), list2, images));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        viewModel.setId(IDs);
-                        viewModel.setName(sizes);
+                    }
 
 
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+                    colorsadapter colorsadapter = new colorsadapter(productInformation.this, list3, recyclerView2, recyclerView3, list, list2);
+                    recyclerView.setAdapter(colorsadapter);
+                    System.out.println(list3);
+                    recyclerView3.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+                    banneradapter banneradapter = new banneradapter(Collections.singletonList(list2.get(0).images.get(0)), getApplicationContext());
+                    recyclerView3.setAdapter(banneradapter);
+                    recyclerView2.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+                    sizesadapter sizesadapter = new sizesadapter(productInformation.this, Collections.singletonList(list2.get(0).name.get(0)), Collections.singletonList(list2.get(0).id.get(0)));
+                    recyclerView2.setAdapter(sizesadapter);
 
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
 
-                        JSONArray imagesArray = jsonObject.getJSONArray("imgNameList");
-                        for (int j=0;j<imagesArray.length();j++) {
-                            JSONObject imagesObject = imagesArray.getJSONObject(j);
-                            String image = imagesObject.getString("img");
-                            String myImg = "http://clothesshopapi2.azurewebsites.net/img/products/"+image;
-                            images.add(myImg);
-                            System.out.println(images);
+                }
+            }) {
+                @Override
+                protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                    try {
+                        Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+                        if (cacheEntry == null) {
+                            cacheEntry = new Cache.Entry();
                         }
-                        viewModel.setImages(images);
-                        list2.add(viewModel);
-
-                        list3.add(new newsinheret(jsonObject.getInt("colorId"),Color.parseColor(jsonObject.getString("colorCode").substring(0, 7)),list2,images));
+                        final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                        final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+                        long now = System.currentTimeMillis();
+                        final long softExpire = now + cacheHitButRefreshed;
+                        final long ttl = now + cacheExpired;
+                        cacheEntry.data = response.data;
+                        cacheEntry.softTtl = softExpire;
+                        cacheEntry.ttl = ttl;
+                        String headerValue;
+                        headerValue = response.headers.get("Date");
+                        if (headerValue != null) {
+                            cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                        }
+                        headerValue = response.headers.get("Last-Modified");
+                        if (headerValue != null) {
+                            cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+                        }
+                        cacheEntry.responseHeaders = response.headers;
+                        final String jsonString = new String(response.data,
+                                HttpHeaderParser.parseCharset(response.headers));
+                        return Response.success(new JSONArray(jsonString), cacheEntry);
+                    } catch (UnsupportedEncodingException e) {
+                        return Response.error(new ParseError(e));
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        return Response.error(new ParseError(e));
                     }
                 }
 
 
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
-                colorsadapter colorsadapter = new colorsadapter(productInformation.this, list3, recyclerView2, recyclerView3, list,list2);
-                recyclerView.setAdapter(colorsadapter);
-                System.out.println(list3);
-                recyclerView3.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
-                banneradapter banneradapter = new banneradapter(Collections.singletonList(list2.get(0).images.get(0)),getApplicationContext());
-                recyclerView3.setAdapter(banneradapter);
-                recyclerView2.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
-                sizesadapter sizesadapter = new sizesadapter(productInformation.this, Collections.singletonList(list2.get(0).name.get(0)), Collections.singletonList(list2.get(0).id.get(0)));
-                recyclerView2.setAdapter(sizesadapter);
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
-                try {
-                    Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
-                    if (cacheEntry == null) {
-                        cacheEntry = new Cache.Entry();
-                    }
-                    final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
-                    final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
-                    long now = System.currentTimeMillis();
-                    final long softExpire = now + cacheHitButRefreshed;
-                    final long ttl = now + cacheExpired;
-                    cacheEntry.data = response.data;
-                    cacheEntry.softTtl = softExpire;
-                    cacheEntry.ttl = ttl;
-                    String headerValue;
-                    headerValue = response.headers.get("Date");
-                    if (headerValue != null) {
-                        cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
-                    }
-                    headerValue = response.headers.get("Last-Modified");
-                    if (headerValue != null) {
-                        cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
-                    }
-                    cacheEntry.responseHeaders = response.headers;
-                    final String jsonString = new String(response.data,
-                            HttpHeaderParser.parseCharset(response.headers));
-                    return Response.success(new JSONArray(jsonString), cacheEntry);
-                } catch (UnsupportedEncodingException e) {
-                    return Response.error(new ParseError(e));
-                } catch (JSONException e) {
-                    return Response.error(new ParseError(e));
+                @Override
+                public void deliverError(VolleyError error) {
+                    super.deliverError(error);
                 }
-            }
 
+                @Override
+                protected VolleyError parseNetworkError(VolleyError volleyError) {
+                    return super.parseNetworkError(volleyError);
+                }
+            };
 
-
-            @Override
-            public void deliverError(VolleyError error) {
-                super.deliverError(error);
-            }
-
-            @Override
-            protected VolleyError parseNetworkError(VolleyError volleyError) {
-                return super.parseNetworkError(volleyError);
-            }
-        };
-
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(request);
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(request);
+        }
 
 
 
         slidingUpPanelLayout.setPanelHeight(getDisplay().getHeight() / 2);
+
+
+        // Button Responsible for sending the desired item to the list to be shown in the cart.
         cardView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences preferences = getSharedPreferences("colorId",0);
+                SharedPreferences preferences = getSharedPreferences("colorId", 0);
                 SharedPreferences sharedPreferences = getSharedPreferences("checkbox3", 0);
-                SharedPreferences sharedPreferences1 = getSharedPreferences("checkbox",0);
+                SharedPreferences sharedPreferences1 = getSharedPreferences("checkbox", 0);
                 String checkbox = sharedPreferences.getString("acesstoken", null);
-                String state = sharedPreferences1.getString("remember",null);
+                String state = sharedPreferences1.getString("remember", null);
                 if (state.equals("false")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(productInformation.this);
                     builder.setIcon(R.drawable.logo_splash).setTitle("You must sign in!").setMessage("You must have an account to order this item!").setPositiveButton("Sign in", new DialogInterface.OnClickListener() {
@@ -272,23 +372,23 @@ public class productInformation extends AppCompatActivity {
 
                 } else if (state.equals("true")) {
 
-                    Intent intent = new Intent(productInformation.this,myCartActivity.class);
+                    Intent intent = new Intent(productInformation.this, myCartActivity.class);
                     // send product name
                     // send product picture
                     // send product final price
                     // send product id
-                    intent.putExtra("productName",productName);
-                    intent.putExtra("price",price2);
-                    intent.putExtra("mainProductId",mainId);
-                    intent.putExtra("imgNameList",img);
+                    intent.putExtra("productName", productName);
+                    intent.putExtra("price", price2);
+                    intent.putExtra("mainProductId", mainId);
+                    intent.putExtra("imgNameList", img);
 
-                    System.out.println(productName);
+                    System.out.println(productName+" <---- Product name before going to cart");
                     listCart.clear();
                     listCart.addAll(loadData());
-                    listCart.add(new cartinheret(productName,price2,myimage2,mainId,1,choiceColor,choiceSize));
+                    listCart.add(new cartinheret(productName, price2, myimage2, mainId, 1, choiceColor, choiceSize,percentage));
                     System.out.println(choiceColor + " <--- Color ID going to Cart");
                     System.out.println(choiceSize + " <--- Size ID going to Cart");
-                    System.out.println(img+"<--- string");
+                    System.out.println(img + "<--- string");
 
                     saveData(listCart);
                     startActivity(intent);
@@ -297,6 +397,21 @@ public class productInformation extends AppCompatActivity {
             }
         });
 
+        // Add the desired Product to list of bookmarks.
+        bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listFavs.clear();
+                listFavs.addAll(loadDataFavs());
+//                listFavs.add(new newsinheret(productName,price2,String.valueOf(price2/(rate/100)),myimage2));
+                listFavs.add(new featuredinheret(productName,String.valueOf(price2),String.valueOf(rate),myimage2,String.valueOf(percentage)));
+                Toast.makeText(productInformation.this, "Added to bookmarks", Toast.LENGTH_SHORT).show();
+
+                saveDataFavs(listFavs);
+            }
+        });
+
+        // To go back to the previous page.
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -308,19 +423,22 @@ public class productInformation extends AppCompatActivity {
     }
 
     private void saveData(List<cartinheret> list) {
-        SharedPreferences sharedPreferences = getSharedPreferences("preferences2",0);
+        SharedPreferences sharedPreferences = getSharedPreferences("preferences2", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString("product", json);
         editor.apply();
     }
+
     private List<cartinheret> loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("preferences2",0);;
+        SharedPreferences sharedPreferences = getSharedPreferences("preferences2", 0);
+        ;
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("product",null);
-        Type type = new TypeToken<ArrayList<cartinheret>>() {}.getType();
-        listCart = gson.fromJson(json,type);
+        String json = sharedPreferences.getString("product", null);
+        Type type = new TypeToken<ArrayList<cartinheret>>() {
+        }.getType();
+        listCart = gson.fromJson(json, type);
 
         if (listCart == null) {
             listCart = new ArrayList<>();
@@ -329,21 +447,39 @@ public class productInformation extends AppCompatActivity {
         return listCart;
     }
 
+    private void saveDataFavs(List<featuredinheret> list) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Bookmarks", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString("bookmark", json);
+        editor.apply();
+    }
 
+    private List<featuredinheret> loadDataFavs() {
+        SharedPreferences sharedPreferences = getSharedPreferences("Bookmarks", 0);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("bookmark", null);
+        Type type = new TypeToken<ArrayList<featuredinheret>>() {
+        }.getType();
+        listFavs = gson.fromJson(json, type);
+
+        if (listFavs == null) {
+            listFavs = new ArrayList<>();
+        }
+
+        return listFavs;
+    }
 
 
     class colorsadapter extends RecyclerView.Adapter<colorsadapter.mh> {
         Context context;
         List<newsinheret> color = new ArrayList<>();
-
         RecyclerView recyclerView;
         RecyclerView recyclerView2;
         List<Integer> images = new ArrayList<>();
         List<ViewModel> sizes = new ArrayList<>();
         int choice;
-
-        SharedPreferences preferencesColorId = getSharedPreferences("colorId",0);
-//        SharedPreferences preferencesSizeId = getSharedPreferences("sizeId",0);
 
 
         public colorsadapter() {
@@ -369,9 +505,10 @@ public class productInformation extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull mh holder, int position) {
+
             holder.cardView.setCardBackgroundColor(color.get(position).getColorcode());
             List<ViewModel> test = new ArrayList<>();
-            List<String> mysizes=new ArrayList<>();
+            List<String> mysizes = new ArrayList<>();
             List<String> myImages = new ArrayList<>();
             List<Integer> test2 = new ArrayList<>();
             choice = list3.get(0).colorid;
@@ -392,19 +529,13 @@ public class productInformation extends AppCompatActivity {
                     recyclerView.setAdapter(sizesadapter);
 
                     recyclerView3.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), RecyclerView.HORIZONTAL, false));
-                    banneradapter banneradapter = new banneradapter(myImages,getApplicationContext());
+                    banneradapter banneradapter = new banneradapter(myImages, getApplicationContext());
                     recyclerView3.setAdapter(banneradapter);
 
                     choice = list3.get(position).colorid;
                     productInformation.this.choiceColor = choice;
-                    productInformation.this.myimage2= list3.get(position).getImagemodel();
+                    productInformation.this.myimage2 = list3.get(position).getImagemodel();
 
-
-//                    preferencesColorId.edit().clear().commit();
-//
-//                    preferencesColorId.edit().clear().putInt("colorId",list2.get(position).id.get(position)).apply();
-//
-//                    System.out.println(preferencesColorId.getInt("colorId",0));
 
                 }
             });
@@ -434,7 +565,6 @@ public class productInformation extends AppCompatActivity {
         int choice;
         List<Integer> list1;
 
-//    SharedPreferences preferencesSizeId = context.getSharedPreferences("sizeId",0);
 
         public sizesadapter(Context context, List<String> list, List<Integer> list2) {
             this.context = context;
@@ -504,6 +634,6 @@ public class productInformation extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(productInformation.this,MainActivity.class));
+        startActivity(new Intent(productInformation.this, MainActivity.class));
     }
 }

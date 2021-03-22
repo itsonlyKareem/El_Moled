@@ -1,5 +1,6 @@
 package com.elmoledmol.www;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -19,7 +20,7 @@ import android.widget.Toast;
 
 public class settingfragment extends Fragment {
     CardView card;
-    LinearLayout layout1, layout2, layout3, layout4, layout5, layout6;
+    LinearLayout layout1, layout2, layout3, layout4, layout5, layout6, layout7;
     TextView email;
 
     @Override
@@ -34,6 +35,7 @@ public class settingfragment extends Fragment {
         layout4 = v.findViewById(R.id.MyCards);
         layout5 = v.findViewById(R.id.Vouchers);
         layout6 = v.findViewById(R.id.PickupPoints);
+        layout7 = v.findViewById(R.id.AppInfo);
         email=v.findViewById(R.id.textView28);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("checkbox", 0);
@@ -102,6 +104,14 @@ public class settingfragment extends Fragment {
                 View view1=LayoutInflater.from(getActivity()).inflate(R.layout.customtoastunavailable,container,false);
                 toast.setView(view1);
                 toast.show();
+            }
+        });
+
+        layout7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),AppInfoActivity.class);
+                startActivity(intent);
             }
         });
         return v;

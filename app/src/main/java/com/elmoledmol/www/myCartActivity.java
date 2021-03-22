@@ -35,6 +35,7 @@ public class myCartActivity extends AppCompatActivity {
     ImageView back;
     List<adressinheret> listAddresses = new ArrayList<>();
     ArrayList<cartinheret> list = new ArrayList<>();
+    ArrayList<featuredinheret> listFavs = new ArrayList<>();
 
 
     @Override
@@ -47,13 +48,16 @@ public class myCartActivity extends AppCompatActivity {
         recyclerCart = findViewById(R.id.recyclerCart);
 
 
-        for (int i=0;i<loadData().size();i++) {
-            System.out.println(loadData().get(i).getColorId()+" <---- Color ID in cart");
-            System.out.println(loadData().get(i) .getSizeId()+ " <---- Size ID in cart");
-            System.out.println(list.get(i).getName());
-        }
+//        for (int i=0;i<loadData().size();i++) {
+//            System.out.println(loadData().get(i).getColorId()+" <---- Color ID in cart");
+//            System.out.println(loadData().get(i) .getSizeId()+ " <---- Size ID in cart");
+//            System.out.println(list.get(i).getName());
+//        }
 
 
+
+
+        // Showing the data in the cart.
         adapter = new CartAdapter(loadData(),getApplicationContext());
         adapter.notifyDataSetChanged();
         recyclerCart.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -62,9 +66,11 @@ public class myCartActivity extends AppCompatActivity {
         card = findViewById(R.id.card99);
         card.setBackgroundResource(R.drawable.corner);
 
+        // Setting the swipe detector.
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerCart);
 
+        // To Proceed to Checkout.
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +84,8 @@ public class myCartActivity extends AppCompatActivity {
             }
         });
 
+
+        // To go back to previous page.
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,8 +96,8 @@ public class myCartActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        System.out.println(intent.getStringExtra("productName"));
+//        Intent intent = getIntent();
+//        System.out.println(intent.getStringExtra("productName"));
     }
 
 
@@ -119,9 +127,9 @@ public class myCartActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    List<Integer> favs = new ArrayList<>();
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -135,7 +143,7 @@ public class myCartActivity extends AppCompatActivity {
 
             switch (direction) {
                 case ItemTouchHelper.LEFT:
-                    cartinheret deletedRecord = new cartinheret(list.get(position).name, list.get(position).price, list.get(position).images,list.get(position).mainId, list.get(position).Qunatity,list.get(position).colorId,list.get(position).sizeId);
+                    cartinheret deletedRecord = new cartinheret(list.get(position).name, list.get(position).price, list.get(position).images,list.get(position).mainId, list.get(position).Qunatity,list.get(position).colorId,list.get(position).sizeId,list.get(position).percentage);
                     if (position == lastPosition) {
                         list.remove(lastPosition);
                         adapter.notifyItemRemoved(lastPosition);
@@ -177,6 +185,16 @@ public class myCartActivity extends AppCompatActivity {
                         break;
                     }
 
+                    case ItemTouchHelper.RIGHT:
+                        featuredinheret toBeinFavs = new featuredinheret(list.get(position).name,String.valueOf(list.get(position).price),"0",list.get(position).images,String.valueOf(list.get(position).percentage));
+                        listFavs.clear();
+                        listFavs.addAll(loadDataFavs());
+                        listFavs.add(toBeinFavs);
+                        adapter.notifyDataSetChanged();
+                        saveDataFavs(listFavs);
+
+                        Snackbar.make(recyclerCart, "Item added to bookmarks successfully",Snackbar.LENGTH_LONG).show();
+
 
 //                case ItemTouchHelper.RIGHT:
 //                    Integer chosenRecord = new Integer(images.get(position));
@@ -205,5 +223,29 @@ public class myCartActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(myCartActivity.this,MainActivity.class));
+    }
+
+    private void saveDataFavs(List<featuredinheret> list) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Bookmarks", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString("bookmark", json);
+        editor.apply();
+    }
+
+    private List<featuredinheret> loadDataFavs() {
+        SharedPreferences sharedPreferences = getSharedPreferences("Bookmarks", 0);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("bookmark", null);
+        Type type = new TypeToken<ArrayList<featuredinheret>>() {
+        }.getType();
+        listFavs = gson.fromJson(json, type);
+
+        if (listFavs == null) {
+            listFavs = new ArrayList<>();
+        }
+
+        return listFavs;
     }
 }

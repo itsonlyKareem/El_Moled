@@ -477,7 +477,7 @@ public class productInformation extends AppCompatActivity {
     }
 
 
-    class colorsadapter extends RecyclerView.Adapter<colorsadapter.mh> {
+    public class colorsadapter extends RecyclerView.Adapter<colorsadapter.mh> {
         Context context;
         List<newsinheret> color = new ArrayList<>();
         RecyclerView recyclerView;

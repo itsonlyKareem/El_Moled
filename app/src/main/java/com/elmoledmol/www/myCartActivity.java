@@ -162,6 +162,7 @@ public class myCartActivity extends AppCompatActivity {
                                         saveData(list);
                                     }
                                 }).show();
+                        break;
 
                     } else {
 
@@ -194,15 +195,7 @@ public class myCartActivity extends AppCompatActivity {
 
                         Snackbar.make(recyclerCart, "Item added to bookmarks successfully",Snackbar.LENGTH_LONG).show();
 
-
-//                case ItemTouchHelper.RIGHT:
-//                    Integer chosenRecord = new Integer(images.get(position));
-//                    favs.add(chosenRecord);
-//                    System.out.println(Arrays.toString(new List[]{favs}));
-//                    recyclerCart.setAdapter(null);
-//                    recyclerCart.setAdapter(adapter);
-//                    break;
-
+                        break;
             }
         }
 

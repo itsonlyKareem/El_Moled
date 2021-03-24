@@ -265,7 +265,7 @@ public class productInformation extends AppCompatActivity {
                             viewModel.setImages(images);
                             list2.add(viewModel);
 
-                            list3.add(new newsinheret(jsonObject.getInt("colorId"), Color.parseColor(jsonObject.getString("colorCode").substring(0, 7)), list2, images));
+                            list3.add(new newsinheret(jsonObject.getInt("colorId"), Color.parseColor(jsonObject.getString("colorCode").substring(0,7)), list2, images));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

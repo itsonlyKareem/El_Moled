@@ -29,7 +29,7 @@ public class seeAllAdapter extends RecyclerView.Adapter<seeAllAdapter.ViewHolder
 
         holder.product.setText(list.get(position).getProduct());
         holder.price.setText(String.valueOf(list.get(position).getPrice()));
-        Picasso.get().load(list.get(position).getImagemodel()).into(holder.imagemodel);
+        Picasso.get().load(list.get(position).getImagemodel()).resize(400,400).into(holder.imagemodel);
         Picasso.get().load(list.get(position).getLogo()).into(holder.offer);
         float x = list.get(position).getPrice() * (100 - list.get(position).percentage) / 100;
         if (list.get(position).getPercentage() == 0) {

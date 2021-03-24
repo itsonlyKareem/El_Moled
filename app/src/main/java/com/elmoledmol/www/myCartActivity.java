@@ -167,7 +167,6 @@ public class myCartActivity extends AppCompatActivity {
 
                         list.remove(position);
                         adapter.notifyItemRemoved(position);
-                        adapter.notifyDataSetChanged();
                         saveData(list);
 
 

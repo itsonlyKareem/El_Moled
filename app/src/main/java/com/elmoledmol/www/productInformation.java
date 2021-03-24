@@ -277,6 +277,11 @@ public class productInformation extends AppCompatActivity {
                     recyclerView.setAdapter(colorsadapter);
                     System.out.println(list3);
                     recyclerView3.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+                    if (list2.get(0).images.isEmpty()) {
+                        List<String> list = new ArrayList<>();
+                        list.add(String.valueOf(R.drawable.no_available));
+                        list2.get(0).setImages(list);
+                    }
                     banneradapter banneradapter = new banneradapter(Collections.singletonList(list2.get(0).images.get(0)), getApplicationContext());
                     recyclerView3.setAdapter(banneradapter);
                     recyclerView2.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));

@@ -1,5 +1,6 @@
 package com.elmoledmol.www;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -36,6 +37,9 @@ public class forgotpassword extends Fragment {
         viewPager = getActivity().findViewById(R.id.viewPager);
         email = view.findViewById(R.id.checkemail);
         back = view.findViewById(R.id.back);
+        saveEmail(email.getText().toString());
+
+
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +48,7 @@ public class forgotpassword extends Fragment {
                     return;
                 }else {
 
-                    Call<ResponseBody> call = retrofitclient.getInstance().getApi().resetPassword(email.getText().toString());
+                    Call<ResponseBody> call = retrofitclient.getInstance().getApi().resetPassword("http://clothesshopapi2.azurewebsites.net/api/Account/PasswordResetByEmail?Email="+email.getText().toString());
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -67,5 +71,12 @@ public class forgotpassword extends Fragment {
             }
         });
         return view;
+    }
+
+    public void saveEmail (String email) {
+        SharedPreferences preferences = getContext().getSharedPreferences("email",0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("email",email);
+        editor.apply();
     }
 }

@@ -1,13 +1,14 @@
 <component name="libraryTable">
   <library name="Gradle: it.xabaras.android:recyclerview-swipedecorator:1.2.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/8498e926cde6f8d271c5d61ba093449e/jetified-recyclerview-swipedecorator-1.2.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/8498e926cde6f8d271c5d61ba093449e/jetified-recyclerview-swipedecorator-1.2.1/res" />
-      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/8498e926cde6f8d271c5d61ba093449e/jetified-recyclerview-swipedecorator-1.2.1/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/05dd3100bd81a724b275ada1c4a3508a/jetified-recyclerview-swipedecorator-1.2.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0ab765e7bd14ee2976996bc6bdff7677/jetified-recyclerview-swipedecorator-1.2.1/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0ab765e7bd14ee2976996bc6bdff7677/jetified-recyclerview-swipedecorator-1.2.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0ab765e7bd14ee2976996bc6bdff7677/jetified-recyclerview-swipedecorator-1.2.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/d0047555443e88b3c88b12d7d8bc3eff/jetified-recyclerview-swipedecorator-1.2.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/d0047555443e88b3c88b12d7d8bc3eff/jetified-recyclerview-swipedecorator-1.2.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/d0047555443e88b3c88b12d7d8bc3eff/jetified-recyclerview-swipedecorator-1.2.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/modules-2/files-2.1/it.xabaras.android/recyclerview-swipedecorator/1.2.1/a6469e89abfcd54587665200fd8384c464c04768/recyclerview-swipedecorator-1.2.1-javadoc.jar!/" />

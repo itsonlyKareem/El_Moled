@@ -1,16 +1,16 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.Jay-Goo:RangeSeekBar:v3.0.0@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/fa5c03e161539a929b3e2781886b880d/jetified-RangeSeekBar-v3.0.0/annotations.zip!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/36f1d8407755e8cd26c672af09e5bb54/jetified-RangeSeekBar-v3.0.0/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/886de10757e068b165ad2cf7b153b750/jetified-RangeSeekBar-v3.0.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/fa5c03e161539a929b3e2781886b880d/jetified-RangeSeekBar-v3.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/fa5c03e161539a929b3e2781886b880d/jetified-RangeSeekBar-v3.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/fa5c03e161539a929b3e2781886b880d/jetified-RangeSeekBar-v3.0.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/36f1d8407755e8cd26c672af09e5bb54/jetified-RangeSeekBar-v3.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/36f1d8407755e8cd26c672af09e5bb54/jetified-RangeSeekBar-v3.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/36f1d8407755e8cd26c672af09e5bb54/jetified-RangeSeekBar-v3.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/886de10757e068b165ad2cf7b153b750/jetified-RangeSeekBar-v3.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/886de10757e068b165ad2cf7b153b750/jetified-RangeSeekBar-v3.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/886de10757e068b165ad2cf7b153b750/jetified-RangeSeekBar-v3.0.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/modules-2/files-2.1/com.github.Jay-Goo/RangeSeekBar/v3.0.0/f40b6811349bf282dd034309a8b8b231010b7db8/RangeSeekBar-v3.0.0-javadoc.jar!/" />

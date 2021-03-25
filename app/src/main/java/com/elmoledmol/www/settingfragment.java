@@ -86,12 +86,8 @@ public class settingfragment extends Fragment {
         layout5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast=new Toast(getContext());
-                toast.setGravity(Gravity.BOTTOM,0,0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                View view1=LayoutInflater.from(getActivity()).inflate(R.layout.customtoastunavailable,container,false);
-                toast.setView(view1);
-                toast.show();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragment2, new VoucherFragment()).commit();
             }
         });
 

@@ -1,5 +1,6 @@
 package com.elmoledmol.www;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -83,13 +84,18 @@ public class homefragment extends Fragment {
         list6 = new ArrayList<>();
 
 
-
+        ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.show();
         // Request responsible for news available.
         {
             request3 = new JsonArrayRequest(newitems, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
-
+                    if (mProgressDialog.isShowing()){
+                        mProgressDialog.dismiss();
+                    }
                     JSONObject jsonObject = null;
 
                     list5.clear();
@@ -125,7 +131,8 @@ public class homefragment extends Fragment {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            }){
+            })
+            {
                 @Override
                 protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
                     try {
@@ -177,6 +184,7 @@ public class homefragment extends Fragment {
                 }
             };
             MySingleton.getInstance(getContext()).addToRequestQueue(request3);
+            ;
             requestQueue3 = Volley.newRequestQueue(getContext());
             requestQueue3.add(request3);
         }
@@ -187,7 +195,9 @@ public class homefragment extends Fragment {
             request4 = new JsonArrayRequest(topitems, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
-
+                    if (mProgressDialog.isShowing()){
+                        mProgressDialog.dismiss();
+                    }
                     JSONObject jsonObject = null;
 
                     list6.clear();
@@ -283,10 +293,13 @@ public class homefragment extends Fragment {
 
         // Request responsible for Featured Items.
         {
+
             request = new JsonArrayRequest(featuredUrl, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
-
+                    if (mProgressDialog.isShowing()){
+                        mProgressDialog.dismiss();
+                    }
                     JSONObject jsonObject = null;
 
                     list3.clear();
@@ -385,6 +398,9 @@ public class homefragment extends Fragment {
             request2 = new JsonArrayRequest(brands, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
+                    if (mProgressDialog.isShowing()){
+                        mProgressDialog.dismiss();
+                    }
                     JSONObject jsonObject = null;
                     list4.clear();
                     for (int i = 0; i < response.length(); i++) {

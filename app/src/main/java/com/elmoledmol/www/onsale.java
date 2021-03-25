@@ -650,98 +650,98 @@ public class onsale extends Fragment {
             headers.setAdapter(searchItemsAdapter);
 
 
-            String url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=&CategoryId=&brandsId=";
-
-            request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    itemList.clear();
-                    JSONObject jsonObject = null;
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            jsonObject = response.getJSONObject(i);
-                            int mainproduct = jsonObject.getInt("mainProductId");
-                            String productname = jsonObject.getString("productName");
-                            int productprice = jsonObject.getInt("productPrice");
-                            int percentage = jsonObject.getInt("ProductOfferPercentage");
-                            String imagemodel = jsonObject.getString("imgName");
-                            String myImg = "http://clothesshopapi2.azurewebsites.net/img/products/" + imagemodel;
-                            String imgbrands = jsonObject.getString("ImgBrands");
-                            String myImg2 = "http://clothesshopapi2.azurewebsites.net/img/products/" + imgbrands;
-                            int brandid = jsonObject.getInt("brandsId");
-                            itemList.add(new ChildItem(mainproduct, percentage, brandid, productname, myImg, myImg2, productprice));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    ParentItemAdapter parentItemAdapter = new ParentItemAdapter(itemList);
-                    categories.setLayoutManager(new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false));
-                    categories.setAdapter(parentItemAdapter);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            })
-            {
-                @Override
-                protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
-                    try {
-                        Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
-                        if (cacheEntry == null) {
-                            cacheEntry = new Cache.Entry();
-                        }
-                        final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
-                        final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
-                        long now = System.currentTimeMillis();
-                        final long softExpire = now + cacheHitButRefreshed;
-                        final long ttl = now + cacheExpired;
-                        cacheEntry.data = response.data;
-                        cacheEntry.softTtl = softExpire;
-                        cacheEntry.ttl = ttl;
-                        String headerValue;
-                        headerValue = response.headers.get("Date");
-                        if (headerValue != null) {
-                            cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
-                        }
-                        headerValue = response.headers.get("Last-Modified");
-                        if (headerValue != null) {
-                            cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
-                        }
-                        cacheEntry.responseHeaders = response.headers;
-                        final String jsonString = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers));
-                        return Response.success(new JSONArray(jsonString), cacheEntry);
-                    } catch (UnsupportedEncodingException e) {
-                        return Response.error(new ParseError(e));
-                    } catch (JSONException e) {
-                        return Response.error(new ParseError(e));
-                    }
-                }
-
-                @Override
-                protected void deliverResponse(JSONArray response) {
-                    super.deliverResponse(response);
-                }
-
-                @Override
-                public void deliverError(VolleyError error) {
-                    super.deliverError(error);
-                }
-
-                @Override
-                protected VolleyError parseNetworkError(VolleyError volleyError) {
-                    return super.parseNetworkError(volleyError);
-                }
-            };
-            MySingleton.getInstance(getContext()).addToRequestQueue(request);
-            requestQueue = Volley.newRequestQueue(getContext());
-            requestQueue.add(request);
+//            String url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=&CategoryId=&brandsId=";
+//
+//            request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+//                @Override
+//                public void onResponse(JSONArray response) {
+//                    itemList.clear();
+//                    JSONObject jsonObject = null;
+//                    for (int i = 0; i < response.length(); i++) {
+//                        try {
+//                            jsonObject = response.getJSONObject(i);
+//                            int mainproduct = jsonObject.getInt("mainProductId");
+//                            String productname = jsonObject.getString("productName");
+//                            int productprice = jsonObject.getInt("productPrice");
+//                            int percentage = jsonObject.getInt("ProductOfferPercentage");
+//                            String imagemodel = jsonObject.getString("imgName");
+//                            String myImg = "http://clothesshopapi2.azurewebsites.net/img/products/" + imagemodel;
+//                            String imgbrands = jsonObject.getString("ImgBrands");
+//                            String myImg2 = "http://clothesshopapi2.azurewebsites.net/img/products/" + imgbrands;
+//                            int brandid = jsonObject.getInt("brandsId");
+//                            itemList.add(new ChildItem(mainproduct, percentage, brandid, productname, myImg, myImg2, productprice));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//
+//                    ParentItemAdapter parentItemAdapter = new ParentItemAdapter(itemList);
+//                    categories.setLayoutManager(new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false));
+//                    categories.setAdapter(parentItemAdapter);
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//
+//                }
+//            })
+//            {
+//                @Override
+//                protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+//                    try {
+//                        Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
+//                        if (cacheEntry == null) {
+//                            cacheEntry = new Cache.Entry();
+//                        }
+//                        final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+//                        final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
+//                        long now = System.currentTimeMillis();
+//                        final long softExpire = now + cacheHitButRefreshed;
+//                        final long ttl = now + cacheExpired;
+//                        cacheEntry.data = response.data;
+//                        cacheEntry.softTtl = softExpire;
+//                        cacheEntry.ttl = ttl;
+//                        String headerValue;
+//                        headerValue = response.headers.get("Date");
+//                        if (headerValue != null) {
+//                            cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
+//                        }
+//                        headerValue = response.headers.get("Last-Modified");
+//                        if (headerValue != null) {
+//                            cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
+//                        }
+//                        cacheEntry.responseHeaders = response.headers;
+//                        final String jsonString = new String(response.data,
+//                                HttpHeaderParser.parseCharset(response.headers));
+//                        return Response.success(new JSONArray(jsonString), cacheEntry);
+//                    } catch (UnsupportedEncodingException e) {
+//                        return Response.error(new ParseError(e));
+//                    } catch (JSONException e) {
+//                        return Response.error(new ParseError(e));
+//                    }
+//                }
+//
+//                @Override
+//                protected void deliverResponse(JSONArray response) {
+//                    super.deliverResponse(response);
+//                }
+//
+//                @Override
+//                public void deliverError(VolleyError error) {
+//                    super.deliverError(error);
+//                }
+//
+//                @Override
+//                protected VolleyError parseNetworkError(VolleyError volleyError) {
+//                    return super.parseNetworkError(volleyError);
+//                }
+//            };
+//            MySingleton.getInstance(getContext()).addToRequestQueue(request);
+//            requestQueue = Volley.newRequestQueue(getContext());
+//            requestQueue.add(request);
+//        }
         }
-
 
         return v;
     }
@@ -902,6 +902,7 @@ public class onsale extends Fragment {
                         String myImg2 = "http://clothesshopapi2.azurewebsites.net/img/products/"+imgbrands;
                         int brandid=jsonObject.getInt("brandsId");
                         itemList.add(new ChildItem(mainproduct,percentage,brandid,productname,myImg,myImg2,productprice));
+                        System.out.println(itemList.get(i).getProductname());
                     }catch (JSONException e){e.printStackTrace();}
 
                 }

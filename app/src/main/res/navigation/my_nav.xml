@@ -72,6 +72,11 @@
         android:name="com.elmoledmol.www.bookmarksfragment"
         android:label="fragment_bookmarksfragment"
         tools:layout="@layout/fragment_bookmarksfragment" />
+    <fragment
+        android:id="@+id/voucherFragment"
+        android:name="com.elmoledmol.www.VoucherFragment"
+        android:label="fragment_voucher"
+        tools:layout="@layout/fragment_voucher" />
 
 
 </navigation>

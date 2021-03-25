@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.MoeidHeidari:banner:1.04@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/385d03b51e8a07944d7eece55ebb6fa4/jetified-banner-1.04/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/385d03b51e8a07944d7eece55ebb6fa4/jetified-banner-1.04/res" />
-      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/385d03b51e8a07944d7eece55ebb6fa4/jetified-banner-1.04/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5be29f63d14a465d826697db878294c2/jetified-banner-1.04/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5be29f63d14a465d826697db878294c2/jetified-banner-1.04/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5be29f63d14a465d826697db878294c2/jetified-banner-1.04/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/d600e706ca05abe6d3b1ad501db95085/jetified-banner-1.04/res" />
+      <root url="file://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/d600e706ca05abe6d3b1ad501db95085/jetified-banner-1.04/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-4.6/caches/transforms-2/files-2.1/d600e706ca05abe6d3b1ad501db95085/jetified-banner-1.04/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

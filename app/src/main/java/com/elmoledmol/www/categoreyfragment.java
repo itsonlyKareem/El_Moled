@@ -1,5 +1,6 @@
 package com.elmoledmol.www;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -111,13 +112,17 @@ public class categoreyfragment extends Fragment {
         items.add("Pants");
         items.add("Shoes");
 
-        brands.setBackgroundResource(R.drawable.spinner_background);
 
         // Responsible for Search for only Men, no further filters
         men.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                brands.setBackgroundResource(R.drawable.spinner_background);
+                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setMessage("Loading...");
+                mProgressDialog.show();
                 women.setTextColor(Color.GRAY);
                 children.setTextColor(Color.GRAY);
                 men.setTextColor(Color.BLACK);
@@ -131,6 +136,9 @@ public class categoreyfragment extends Fragment {
                 request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        if (mProgressDialog.isShowing()){
+                            mProgressDialog.dismiss();
+                    }
                         List<ChildItem> list = new ArrayList<>();
                         JSONObject jsonObject = null;
                         for (int i = 0; i < response.length(); i++) {
@@ -172,6 +180,11 @@ public class categoreyfragment extends Fragment {
         women.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                brands.setBackgroundResource(R.drawable.spinner_background);
+                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setMessage("Loading...");
+                mProgressDialog.show();
                 men.setTextColor(Color.GRAY);
                 children.setTextColor(Color.GRAY);
                 women.setTextColor(Color.BLACK);
@@ -187,6 +200,9 @@ public class categoreyfragment extends Fragment {
                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        if (mProgressDialog.isShowing()){
+                            mProgressDialog.dismiss();
+                        }
                         JSONObject jsonObject = null;
                         for (int i = 0; i < response.length(); i++) {
                             try {
@@ -226,8 +242,14 @@ public class categoreyfragment extends Fragment {
 
         // Responsible for Search for only Children, no further filters
         children.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                brands.setBackgroundResource(R.drawable.spinner_background);
+                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setMessage("Loading...");
+                mProgressDialog.show();
                 men.setTextColor(Color.GRAY);
                 women.setTextColor(Color.GRAY);
                 children.setTextColor(Color.BLACK);
@@ -244,6 +266,9 @@ public class categoreyfragment extends Fragment {
                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        if (mProgressDialog.isShowing()){
+                            mProgressDialog.dismiss();
+                        }
                         JSONObject jsonObject = null;
                         for (int i = 0; i < response.length(); i++) {
                             try {
@@ -282,7 +307,11 @@ public class categoreyfragment extends Fragment {
         });
 
         // Brands Filter Processes starts here
-        {
+        { brands.setBackgroundResource(R.drawable.spinner_background);
+            ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.show();
             brandList.clear();
             brandNames.clear();
             brandList.add(0, new BrandModel(null, "ALL"));
@@ -291,6 +320,9 @@ public class categoreyfragment extends Fragment {
             JsonArrayRequest requestBrand = new JsonArrayRequest(urlBrand, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
+                    if (mProgressDialog.isShowing()){
+                        mProgressDialog.dismiss();
+                    }
                     JSONObject object = null;
 
                     final int[] k = {1};
@@ -317,6 +349,11 @@ public class categoreyfragment extends Fragment {
                     brands.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            brands.setBackgroundResource(R.drawable.spinner_background);
+                            ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                            mProgressDialog.setIndeterminate(true);
+                            mProgressDialog.setMessage("Loading...");
+                            mProgressDialog.show();
                             String url;
                             List<ChildItem> list = new ArrayList<>();
                             if (position == 0) {
@@ -324,6 +361,9 @@ public class categoreyfragment extends Fragment {
                                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                                     @Override
                                     public void onResponse(JSONArray response) {
+                                        if (mProgressDialog.isShowing()){
+                                            mProgressDialog.dismiss();
+                                        }
                                         list.clear();
                                         JSONObject jsonObject = null;
                                         for (int i = 0; i < response.length(); i++) {
@@ -393,6 +433,7 @@ public class categoreyfragment extends Fragment {
                                 requestQueue.add(request);
 
                             } else {
+
                                 url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=" +brandList.get(position).getID();
                                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                                     @Override
@@ -752,6 +793,7 @@ public class categoreyfragment extends Fragment {
         request=new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+
                 JSONObject jsonObject=null;
                 for(int i=0;i<response.length();i++){
                     try {

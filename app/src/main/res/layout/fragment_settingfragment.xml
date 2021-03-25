@@ -231,6 +231,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="My Cards"
+
                             android:textSize="18sp" />
 
                         <ImageView
@@ -257,7 +258,6 @@
                         android:layout_marginTop="20sp"
                         android:layout_marginRight="20sp"
                         android:layout_marginBottom="10sp"
-                        android:alpha="0.5"
                         android:orientation="horizontal">
 
                         <TextView
@@ -265,6 +265,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textColor="#000"
                             android:text="Vouchers"
                             android:textSize="18sp" />
 
@@ -273,7 +274,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="0"
-                            android:src="@drawable/next" />
+                            android:src="@drawable/next"
+                            app:tint="@color/black" />
                     </LinearLayout>
 
                     <LinearLayout

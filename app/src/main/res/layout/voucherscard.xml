@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20sp">
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_210sdp"
+        android:layout_height="@dimen/_120sdp"
+        app:cardCornerRadius="20sp"
+        app:cardBackgroundColor="#FFEFEF"
+        android:elevation="20sp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_margin="5sp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:textColor="#000"
+                android:textAlignment="center"
+                android:text="Boutique Discount"
+                android:id="@+id/offertitle"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:textAlignment="center"
+                android:layout_marginTop="5sp"
+                android:text="1651654#21321"
+                android:id="@+id/offercode"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="#000"
+                android:textAlignment="center"
+                android:layout_marginTop="5sp"
+                android:text="Valid until February 2020"
+                android:id="@+id/offerdate"/>
+
+        </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_120sdp"
+        android:src="@drawable/line"
+        app:tint="@color/black" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20sp"
+        app:cardBackgroundColor="#FFEFEF"
+        android:elevation="20sp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/offerpercentage"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:gravity="center"
+                android:text="20%"
+                android:textAlignment="center"
+                android:textColor="#ff00"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

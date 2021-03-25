@@ -37,7 +37,7 @@ public class searchadapter extends RecyclerView.Adapter<searchadapter.mh> {
     @Override
     public void onBindViewHolder(@NonNull searchadapter.mh holder, int position) {
         holder.brand.setText(list.get(position).getProduct());
-        Picasso.get().load(list.get(position).getLogo()).into(holder.logo);
+        Picasso.get().load(list.get(position).getLogo()).resize(200,150).into(holder.logo);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

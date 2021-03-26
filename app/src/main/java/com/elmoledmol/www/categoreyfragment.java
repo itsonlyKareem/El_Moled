@@ -1,10 +1,23 @@
 package com.elmoledmol.www;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -13,37 +26,22 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.android.volley.Cache;
-import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class categoreyfragment extends Fragment {
     CardView card;
@@ -136,9 +134,9 @@ public class categoreyfragment extends Fragment {
                 request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        if (mProgressDialog.isShowing()){
+                        if (mProgressDialog.isShowing()) {
                             mProgressDialog.dismiss();
-                    }
+                        }
                         List<ChildItem> list = new ArrayList<>();
                         JSONObject jsonObject = null;
                         for (int i = 0; i < response.length(); i++) {
@@ -200,7 +198,7 @@ public class categoreyfragment extends Fragment {
                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        if (mProgressDialog.isShowing()){
+                        if (mProgressDialog.isShowing()) {
                             mProgressDialog.dismiss();
                         }
                         JSONObject jsonObject = null;
@@ -266,7 +264,7 @@ public class categoreyfragment extends Fragment {
                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        if (mProgressDialog.isShowing()){
+                        if (mProgressDialog.isShowing()) {
                             mProgressDialog.dismiss();
                         }
                         JSONObject jsonObject = null;
@@ -307,7 +305,8 @@ public class categoreyfragment extends Fragment {
         });
 
         // Brands Filter Processes starts here
-        { brands.setBackgroundResource(R.drawable.spinner_background);
+        {
+            brands.setBackgroundResource(R.drawable.spinner_background);
             ProgressDialog mProgressDialog = new ProgressDialog(getContext());
             mProgressDialog.setIndeterminate(true);
             mProgressDialog.setMessage("Loading...");
@@ -320,7 +319,7 @@ public class categoreyfragment extends Fragment {
             JsonArrayRequest requestBrand = new JsonArrayRequest(urlBrand, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
-                    if (mProgressDialog.isShowing()){
+                    if (mProgressDialog.isShowing()) {
                         mProgressDialog.dismiss();
                     }
                     JSONObject object = null;
@@ -361,7 +360,7 @@ public class categoreyfragment extends Fragment {
                                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                                     @Override
                                     public void onResponse(JSONArray response) {
-                                        if (mProgressDialog.isShowing()){
+                                        if (mProgressDialog.isShowing()) {
                                             mProgressDialog.dismiss();
                                         }
                                         list.clear();
@@ -434,7 +433,7 @@ public class categoreyfragment extends Fragment {
 
                             } else {
 
-                                url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=" +brandList.get(position).getID();
+                                url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=" + genderChoice + "&CategoryId=&brandsId=" + brandList.get(position).getID();
                                 JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                                     @Override
                                     public void onResponse(JSONArray response) {
@@ -583,23 +582,21 @@ public class categoreyfragment extends Fragment {
                     requestQueue1.add(requestBrand2);
 
 
-
-                } else if ( indicator == 2){
+                } else if (indicator == 2) {
                     System.out.println("bundle is empty");
                 }
             }
-
 
 
         }
 
         // Block Responsible for showing ALL Products on startup + Cache
         {
-//            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-//            headers.setLayoutManager(layoutManager);
-//
-//            searchitemsAdapter searchItemsAdapter = new searchitemsAdapter(items, itemList, headers, categories, men);
-//            headers.setAdapter(searchItemsAdapter);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+            headers.setLayoutManager(layoutManager);
+
+            searchitemsAdapter searchItemsAdapter = new searchitemsAdapter(items, itemList, headers, categories, men);
+            headers.setAdapter(searchItemsAdapter);
 //
 //
 //            String url = "http://clothesshopapi2.azurewebsites.net/api/Product/MainCategory?mainCategoryId=&CategoryId=&brandsId=";
@@ -646,6 +643,12 @@ public class categoreyfragment extends Fragment {
 
     }
 
+
+//    ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+//        mProgressDialog.setIndeterminate(true);
+//        mProgressDialog.setMessage("Loading...");
+//        mProgressDialog.show();
+
     public class searchitemsAdapter extends RecyclerView.Adapter<searchitemsAdapter.ViewHolder> {
         List<String> items;
         List<ChildItem> list;
@@ -654,6 +657,8 @@ public class categoreyfragment extends Fragment {
         TextView textView;
         RequestQueue requestQueue;
         JsonArrayRequest request;
+        ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+
 
 
         public searchitemsAdapter(List<String> items, List<ChildItem> list, RecyclerView headers, RecyclerView category, TextView textView) {
@@ -675,8 +680,18 @@ public class categoreyfragment extends Fragment {
         public void onBindViewHolder(@NonNull searchitemsAdapter.ViewHolder holder, int position) {
             holder.searchItem.setText(items.get(position).toString());
             List<ChildItem> test2 = new ArrayList<>();
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setMessage("Searching for a network...");
+            mProgressDialog.setButton(ProgressDialog.BUTTON_POSITIVE, "Continue offline", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            mProgressDialog.setCancelable(false);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("CheckResult")
                 @Override
                 public void onClick(View v) {
                     test2.clear();
@@ -689,6 +704,7 @@ public class categoreyfragment extends Fragment {
                             clothingType = "2";
                             System.out.println(clothingType);
                             int brandChoice = categoreyfragment.this.brands.getSelectedItemPosition();
+
                             getCategoryResponse(gender,clothingType,String.valueOf(categoreyfragment.this.brandList.get(brandChoice).ID),request,requestQueue,category,test2,textView,searchitemsAdapter.this);
 
 
@@ -712,7 +728,7 @@ public class categoreyfragment extends Fragment {
 
                         }
 
-                    }
+                        }
 
                     else if (textView.getText().toString().equals("WOMEN")) {
                         gender = "2";
@@ -817,6 +833,8 @@ public class categoreyfragment extends Fragment {
 
                 ParentItemAdapter parentItemAdapter = new ParentItemAdapter(itemList);
                 category.setLayoutManager(new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false));
+//                parentItemAdapter.notifyDataSetChanged();
+                category.setAdapter(null);
                 category.setAdapter(parentItemAdapter);
             }
         }, new Response.ErrorListener() {
@@ -833,6 +851,31 @@ public class categoreyfragment extends Fragment {
         }
 
     }
+
+
+
+    //ReactiveNetwork
+    //                                    .observeNetworkConnectivity(getContext())
+    //                                    .subscribeOn(Schedulers.io())
+    //                                    .observeOn(AndroidSchedulers.mainThread())
+    //                                    .subscribe(connectivity -> {
+    //                                        if (connectivity.type() == 1) {
+    //                                            System.out.println(connectivity.toString());
+    //
+    //                                            ParentItemAdapter parentItemAdapter = new ParentItemAdapter(getCategoryResponse(gender, clothingType, String.valueOf(categoreyfragment.this.brandList.get(brandChoice).ID), request, requestQueue, category, test2, textView, searchitemsAdapter.this));
+    //                                            category.setLayoutManager(new GridLayoutManager(getContext(),2,RecyclerView.VERTICAL,false));
+    //                                            category.setAdapter(parentItemAdapter);
+    //                                            mProgressDialog.dismiss();
+    //                                        } else if (connectivity.type() == -1) {
+    //                                            System.out.println(connectivity.toString());
+    //                                            mProgressDialog.show();
+    //                                        }
+    //                                        // do something with connectivity
+    //                                        // you can call connectivity.state();
+    //                                        // connectivity.type(); or connectivity.toString();
+    //                                    }, throwable -> {
+    //
+    //                                    });
 
 
 }

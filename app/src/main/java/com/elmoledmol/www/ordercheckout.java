@@ -270,7 +270,6 @@ public class ordercheckout extends AppCompatActivity {
         }
         return listCart;
     }
-
     private void saveData(List<cartinheret> list) {
         SharedPreferences sharedPreferences = getSharedPreferences("preferences2",0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -279,7 +278,6 @@ public class ordercheckout extends AppCompatActivity {
         editor.putString("product", json);
         editor.apply();
     }
-
     private void saveDataAddresses(List<adressinheret> list) {
         SharedPreferences sharedPreferences = getSharedPreferences("Addresses",0);
         SharedPreferences.Editor editor = sharedPreferences.edit();

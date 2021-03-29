@@ -31,9 +31,9 @@ import java.util.TimeZone;
 
 public class notificationadapter extends RecyclerView.Adapter<notificationadapter.mh> {
     Context context;
-    List<String> list = new ArrayList<>();
+    List<NotificationModel> list = new ArrayList<>();
 
-    public notificationadapter(Context context, List<String> list) {
+    public notificationadapter(Context context, List<NotificationModel> list) {
         this.context = context;
         this.list = list;
     }
@@ -47,9 +47,8 @@ public class notificationadapter extends RecyclerView.Adapter<notificationadapte
 
     @Override
     public void onBindViewHolder(@NonNull notificationadapter.mh holder, int position) {
-        holder.message.setText(list.get(position));
-
-        holder.time.setText("just now");
+        holder.message.setText(list.get(position).Body);
+        holder.time.setText(list.get(position).Time.substring(0,10));
     }
 
     @Override

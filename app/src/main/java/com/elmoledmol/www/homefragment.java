@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -31,6 +33,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class homefragment extends Fragment {
@@ -94,7 +98,10 @@ public class homefragment extends Fragment {
                 @Override
                 public void onResponse(JSONArray response) {
                     if (mProgressDialog.isShowing()){
+                        mProgressDialog.setCancelable(true);
                         mProgressDialog.dismiss();
+                    } else {
+                        mProgressDialog.setCancelable(false);
                     }
                     JSONObject jsonObject = null;
 
@@ -182,9 +189,9 @@ public class homefragment extends Fragment {
                 protected VolleyError parseNetworkError(VolleyError volleyError) {
                     return super.parseNetworkError(volleyError);
                 }
+
             };
             MySingleton.getInstance(getContext()).addToRequestQueue(request3);
-            ;
             requestQueue3 = Volley.newRequestQueue(getContext());
             requestQueue3.add(request3);
         }

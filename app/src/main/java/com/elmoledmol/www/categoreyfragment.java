@@ -320,6 +320,7 @@ public class categoreyfragment extends Fragment {
                 @Override
                 public void onResponse(JSONArray response) {
                     if (mProgressDialog.isShowing()) {
+                        mProgressDialog.setCancelable(true);
                         mProgressDialog.dismiss();
                     }
                     JSONObject object = null;

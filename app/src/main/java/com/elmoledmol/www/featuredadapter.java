@@ -35,6 +35,7 @@ public class featuredadapter extends RecyclerView.Adapter<featuredadapter.mh> {
 
     @Override
     public void onBindViewHolder(@NonNull mh holder, int position) {
+
         Picasso.get().load(list.get(position).getImagemodel()).resize(400,400).into(holder.imagemodel);
         holder.product.setText(list.get(position).getProduct());
         holder.price.setText("EGP " + String.valueOf(list.get(position).getPrice()));

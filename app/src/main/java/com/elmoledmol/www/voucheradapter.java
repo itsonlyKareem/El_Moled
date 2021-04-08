@@ -31,8 +31,8 @@ Context context;
     public void onBindViewHolder(@NonNull voucheradapter.mh holder, int position) {
 holder.title.setText(list.get(position).getTitle());
         holder.code.setText(list.get(position).getCode());
-        holder.date.setText(list.get(position).getDate());
-        holder.percentage.setText(list.get(position).getPercentage());
+        holder.date.setText("Valid until "+list.get(position).getDate());
+        holder.percentage.setText(list.get(position).getPercentage()+"%");
     }
 
     @Override

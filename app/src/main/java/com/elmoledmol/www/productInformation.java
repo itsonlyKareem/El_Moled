@@ -438,7 +438,6 @@ public class productInformation extends AppCompatActivity {
 
     private List<cartinheret> loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("preferences2", 0);
-        ;
         Gson gson = new Gson();
         String json = sharedPreferences.getString("product", null);
         Type type = new TypeToken<ArrayList<cartinheret>>() {
